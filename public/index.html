@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DM Brain</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <section class="hero">
+        <div>
+          <p class="eyebrow">Multi-user MVP</p>
+          <h1>One app for many businesses, with server-side AI and Manychat webhooks.</h1>
+          <p class="lede">
+            Each business gets its own workspace, uploaded files, reply settings, encrypted keys,
+            and private Manychat webhook token.
+          </p>
+        </div>
+        <div class="hero-card">
+          <div class="metric-label">What stays private</div>
+          <div class="metric-value">AI keys and Manychat keys are stored only on the backend</div>
+          <p class="muted">The frontend can save secrets, but it never reads them back.</p>
+        </div>
+      </section>
+
+      <section id="auth-view" class="grid auth-grid">
+        <article class="card">
+          <p class="eyebrow">Create account</p>
+          <h2>Register a business owner</h2>
+          <form id="register-form" class="stack">
+            <label>
+              <span>Full name</span>
+              <input name="fullName" required />
+            </label>
+            <label>
+              <span>Email</span>
+              <input type="email" name="email" required />
+            </label>
+            <label>
+              <span>Password</span>
+              <input type="password" name="password" required />
+            </label>
+            <button type="submit" class="primary-btn">Create account</button>
+          </form>
+        </article>
+
+        <article class="card">
+          <p class="eyebrow">Existing user</p>
+          <h2>Login</h2>
+          <form id="login-form" class="stack">
+            <label>
+              <span>Email</span>
+              <input type="email" name="email" required />
+            </label>
+            <label>
+              <span>Password</span>
+              <input type="password" name="password" required />
+            </label>
+            <button type="submit" class="primary-btn">Login</button>
+          </form>
+        </article>
+      </section>
+
+      <section id="app-view" class="hidden">
+        <section class="card workspace-banner">
+          <div>
+            <p class="eyebrow">Workspace</p>
+            <h2 id="workspace-name">Loading...</h2>
+            <p id="workspace-subtitle" class="muted"></p>
+          </div>
+          <div class="banner-actions">
+            <button id="logout-btn" class="ghost-btn" type="button">Logout</button>
+          </div>
+        </section>
+
+        <section class="grid two-up top-grid">
+          <article class="card">
+            <div class="card-header">
+              <div>
+                <p class="eyebrow">Settings</p>
+                <h2>Reply profile</h2>
+              </div>
+              <span id="settings-status" class="status-pill">Ready</span>
+            </div>
+
+            <form id="settings-form" class="stack">
+              <label>
+                <span>Business name</span>
+                <input name="businessName" required />
+              </label>
+              <label>
+                <span>Owner name</span>
+                <input name="ownerName" required />
+              </label>
+              <div class="grid compact">
+                <label>
+                  <span>Owner language</span>
+                  <input name="ownerLanguage" />
+                </label>
+                <label>
+                  <span>Reply language</span>
+                  <input name="replyLanguage" />
+                </label>
+              </div>
+              <div class="grid compact">
+                <label>
+                  <span>Tone</span>
+                  <input name="tone" />
+                </label>
+                <label>
+                  <span>Style</span>
+                  <input name="style" />
+                </label>
+              </div>
+              <div class="grid compact">
+                <label>
+                  <span>AI provider</span>
+                  <select name="aiProvider">
+                    <option value="openai">OpenAI</option>
+                  </select>
+                </label>
+                <label>
+                  <span>AI model</span>
+                  <input name="aiModel" />
+                </label>
+              </div>
+              <label>
+                <span>Brand voice notes</span>
+                <textarea name="brandVoiceNotes" rows="4"></textarea>
+              </label>
+              <label>
+                <span>Fallback reply</span>
+                <textarea name="fallbackReply" rows="3"></textarea>
+              </label>
+              <label>
+                <span>System prompt</span>
+                <textarea name="systemPrompt" rows="4"></textarea>
+              </label>
+              <div class="toggle-row">
+                <label class="toggle">
+                  <input type="checkbox" name="humanLikeMode" />
+                  <span>Human-like mode</span>
+                </label>
+                <label class="toggle">
+                  <input type="checkbox" name="emojiMode" />
+                  <span>Use emojis</span>
+                </label>
+                <label class="toggle">
+                  <input type="checkbox" name="handoffEnabled" />
+                  <span>Human handoff</span>
+                </label>
+              </div>
+              <button type="submit" class="primary-btn">Save settings</button>
+            </form>
+          </article>
+
+          <article class="card">
+            <div class="card-header">
+              <div>
+                <p class="eyebrow">Secrets</p>
+                <h2>Provider keys</h2>
+              </div>
+              <span id="secret-status" class="status-pill">Backend only</span>
+            </div>
+
+            <form id="secret-form" class="stack">
+              <label>
+                <span>OpenAI API key</span>
+                <input type="password" name="openAiApiKey" placeholder="sk-..." />
+              </label>
+              <label>
+                <span>Manychat API key</span>
+                <input type="password" name="manychatApiKey" placeholder="Paste Manychat key" />
+              </label>
+              <button type="submit" class="primary-btn">Save keys</button>
+            </form>
+
+            <div class="secret-state">
+              <p id="openai-state" class="muted"></p>
+              <p id="manychat-state" class="muted"></p>
+            </div>
+          </article>
+        </section>
+
+        <section class="grid two-up bottom-grid">
+          <article class="card">
+            <div class="card-header">
+              <div>
+                <p class="eyebrow">Documents</p>
+                <h2>Upload business files</h2>
+              </div>
+              <span id="upload-status" class="status-pill">Waiting</span>
+            </div>
+
+            <form id="upload-form" class="stack">
+              <label class="upload-box">
+                <span>PDF, Excel, CSV, TXT, JSON</span>
+                <input type="file" name="files" multiple />
+              </label>
+              <button type="submit" class="primary-btn">Upload files</button>
+            </form>
+
+            <div class="doc-list-wrap">
+              <div class="subhead">
+                <h3>Workspace documents</h3>
+                <span id="doc-count" class="muted">0 files</span>
+              </div>
+              <div id="documents" class="doc-list"></div>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-header">
+              <div>
+                <p class="eyebrow">Manychat</p>
+                <h2>Webhook for this workspace</h2>
+              </div>
+            </div>
+
+            <div class="response-box compact-box">
+              <div class="muted">Use this URL inside Manychat External Request:</div>
+              <code id="webhook-url" class="code-block"></code>
+            </div>
+
+            <form id="preview-form" class="stack top-gap">
+              <label>
+                <span>Test incoming message</span>
+                <textarea name="message" rows="5" placeholder="Hi, do you have bridal package pricing?"></textarea>
+              </label>
+              <button type="submit" class="primary-btn">Generate reply</button>
+            </form>
+
+            <div id="preview-output" class="response-box top-gap">
+              <p class="muted">Preview output will appear here.</p>
+            </div>
+            <div id="preview-meta" class="meta"></div>
+          </article>
+        </section>
+      </section>
+
+      <div id="toast" class="toast hidden"></div>
+    </main>
+
+    <script src="/app.js"></script>
+  </body>
+</html>
